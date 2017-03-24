@@ -77,11 +77,17 @@ public class FilmService {
     }
     
     @POST
-    @Path("{idFilm}/films/{idActor}")
+    @Path("{idFilm}/actors/{idActor}")
     @Consumes({"application/xml", "application/json"})
     public void setActorToFilm(@PathParam("idFilm") Integer idFilm, @PathParam("idActor") Integer idActor){
     	Actor actor = actorFacadeEJB.find(idActor);
     	if(actor != null){
+    		List<FilmActor> film_actorList = filmActorFacadeEJB.findAll();
+    		for (FilmActor filmActor : film_actorList) {
+				if(filmActor.getActorId() == idActor && filmActor.getFilmId() == idFilm){
+					return;
+				}
+			}
     		FilmActor fa = new FilmActor();
     		fa.setActorId(idActor);
     		fa.setFilmId(idFilm);

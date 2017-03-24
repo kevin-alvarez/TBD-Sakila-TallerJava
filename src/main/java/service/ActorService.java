@@ -82,6 +82,12 @@ public class ActorService {
     public void setFilmToActor(@PathParam("idActor") Integer idActor, @PathParam("idFilm") Integer idFilm){
     	Film film = filmFacadeEJB.find(idFilm);
     	if(film != null){
+    		List<FilmActor> film_actorList = filmActorFacadeEJB.findAll();
+    		for (FilmActor filmActor : film_actorList) {
+				if(filmActor.getActorId() == idActor && filmActor.getFilmId() == idFilm){
+					return;
+				}
+			}
     		FilmActor fa = new FilmActor();
     		fa.setActorId(idActor);
     		fa.setFilmId(idFilm);
